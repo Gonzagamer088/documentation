@@ -86,7 +86,7 @@ Render is ideal for developers that want full ownership of their data, more cust
 
     ![Image](/images/image-1.png "Image")
 
-    You will find then this page:
+    You will find this page:
 
     ![Image](/images/image-2.png "Image")
 
@@ -99,7 +99,7 @@ Render is ideal for developers that want full ownership of their data, more cust
 
     ![Image](/images/image-4.png "Image")
 
-    Once you create it, open the GitHub Desktop app and clone the repository you just created in the folder that you prefer.
+    After you created it, open the GitHub Desktop app and clone the repository you just created in the folder that you prefer.
 
     <img
       src="/images/image-7.png"
@@ -124,7 +124,7 @@ Render is ideal for developers that want full ownership of their data, more cust
       style={{ width:"23%" }}
     />
 
-    Go back to the GitHub Desktop app and in Summary input something like **Upload** or something random. Then click "<u>Commit</u>".
+    Go back to the GitHub Desktop app, and in the Summary input something like **'Upload'** or something random. Then click "<u>Commit</u>".
 
     <img
       src="/images/image-9.png"
@@ -133,7 +133,7 @@ Render is ideal for developers that want full ownership of their data, more cust
       style={{ width:"67%" }}
     />
 
-    Once you do the local commit, click on Publish Branch.
+    After you do the local commit, click on Publish Branch.
 
     <img
       src="/images/image-10.png"
@@ -141,5 +141,54 @@ Render is ideal for developers that want full ownership of their data, more cust
       title="Image"
       style={{ width:"76%" }}
     />
+
+    When you end all the steps mentioned before, you will have all the necessary files to run Orbit in your Render instance.
+  </Step>
+  <Step title="Setup the Database">
+    Setup the database in your preferred hosting. We recommend using one of the hostings suggested on the [recommended database hosting services](/deploying-with-render#recommended-database-hosting). For this guide, we'll be using [Layerbase](https://layerbase.com/).
+
+    Create an account and head to the dashboard. Once there, click on 'New Database' and select PostgreSQL in the menu.
+
+    ![Image](/images/image-13.png "Image")
+
+    Set the database name to anything you want, and make sure that the version selected is the latest stable one. You may also set a region for the database, which I recommend setting to US, as most of the available machines for Render hosting are in the US.
+
+    After you create the database, click on 'Connect' and copy the connection string it gives you. Make sure that 'Pooled' is enabled to make sure all changes are applied to the database. 
+
+    ![Image](/images/image-14.png "Image")
+
+    ![Image](/images/image-15.png "Image")
+
+    Paste this connection string to a notepad, or come back to this page when you need to paste it.
+  </Step>
+  <Step title="Linking the repository to the instance">
+    Once you created the repository, uploaded the files and linked your GitHub account to your Render account/workspace, click on the repo you just created to link it to the instance.
+
+    <img
+      src="/images/image-11.png"
+      alt="Image"
+      title="Image"
+      style={{ width:"74%" }}
+    />
+
+    Once you clicked the repository, you will see a setup screen. Set the following variables:
+
+    - Name: Any name you want to give to your instance (Default: Planetary)
+    - Language: `Node`
+    - Branch: `main`
+    - Region: the nearest to the database you just created
+    - Build Command: 
+      ```text
+      pnpm install --frozen-lockfile && pnpm exec prisma generate
+      ```
+    - Start Command: 
+      ```text
+      pnpm exec prisma migrate deploy && pnpm start
+      ```
+    - Compute: \$0 / month (This is the Free Tier for their instances)
+    - Environment Variables: Refer to Environment Variables.
+  </Step>
+  <Step title="Start the instance">
+    Click on Deploy and check for any errors in the build logs. If it fails, refer to Troubleshooting in order to fix the errors.
   </Step>
 </Steps>
