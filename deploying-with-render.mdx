@@ -115,7 +115,7 @@ Render is ideal for developers that want full ownership of their data, more cust
       style={{ width:"56%" }}
     />
 
-    Once you did that, upload the files you just downloaded from the Orbit repository, unzip them, and place them like this:
+    Once you did that, upload the files you just downloaded from the Orbit repository and unzip them. It should look something like this:
 
     <img
       src="/images/image-8.png"
@@ -189,6 +189,129 @@ Render is ideal for developers that want full ownership of their data, more cust
     - Environment Variables: Refer to Environment Variables.
   </Step>
   <Step title="Start the instance">
-    Click on Deploy and check for any errors in the build logs. If it fails, refer to Troubleshooting in order to fix the errors.
+    Click on Deploy and check for any errors in the build logs. If it fails, refer to Troubleshooting in order to fix the errors. Your app will be live at a .[render.com](https://render.com) subdomain unless you set up a custom domain. Go to the web given, complete the setup, and your instance will be good to go.
   </Step>
 </Steps>
+
+## Environment Variables
+
+<table>
+  <colgroup>
+    <col width="150" />
+    <col width="239" />
+    <col width="445" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>What is it</th>
+      <th>How to get it/What to set</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`DATABASE_URL`</td>
+      <td>The connection string to your database</td>
+      <td>Go to your database hosting provider and click on Connect and copy the connection string it gives you. Make sure that Connection Pooling is enabled.</td>
+    </tr>
+    <tr>
+      <td>`NEXTAUTH_URL`</td>
+      <td>The URL where your instance is hosted</td>
+      <td>Set the main URL where you access your instance (e.g. [https://instance.planetaryapp.cloud](https://instance.planetaryapp.cloud)). Make sure it doesn't have an extra slash at the end.</td>
+    </tr>
+    <tr>
+      <td>`SESSION_SECRET`</td>
+      <td>The secure string that Orbit will use to encrypt users' passwords, IPs, and secure strings in your database</td>
+      <td>Go to [https://toolfarm.io/en/openssl-rand-generator](https://toolfarm.io/en/openssl-rand-generator) and generate a random string with the **OpenSSL base64 32** option selected.</td>
+    </tr>
+    <tr>
+      <td>`NODE_VERSION`</td>
+      <td>The version of the NodeJS version running in the instance</td>
+      <td>Set `22` .</td>
+    </tr>
+  </tbody>
+</table>
+
+### Optional Variables (recommended to set)
+
+<table>
+  <colgroup>
+    <col width="217" />
+    <col width="240" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>What to set</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`NEXT_TELEMETRY_DISABLED`</td>
+      <td>`1`</td>
+    </tr>
+    <tr>
+      <td>`PORT`</td>
+      <td>`3000`</td>
+    </tr>
+  </tbody>
+</table>
+
+You can also simply copy and paste the following text to the Environment Variables section in your Render dashboard, and it will automatically format into Variables (make sure to modify the values where you are told to change after you paste them)
+
+```dotenv .env.example lines
+DATABASE_URL=CHANGE TO YOUR URL
+NEXT_TELEMETRY_DISABLED=1
+NEXTAUTH_URL=https://your.domain.example
+NODE_VERSION=22
+PORT=3000
+SESSION_SECRET=run openSSL base64 32
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Error P1001: Can't reach database server at..." icon="database">
+    Retry the build; this is a timeout when trying to connect to the server, and no action should be taken. (Prisma Error)
+  </Accordion>
+
+  <Accordion title="Exited with status 1." icon="exclamation-circle">
+    Check for errors before this one; the process only exits with this error if something failed before.
+  </Accordion>
+
+  <Accordion title="Error: Could not find a production build in the '.next' directory." icon="node-js" iconType="regular">
+    Change your Build Command to this:
+
+    ```text
+    pnpm install --frozen-lockfile && pnpm exec prisma generate && next build
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  If you are still having issues, please report a bug.
+</Note>
+
+<Info>
+  Guide made by Gonzagamer088.
+</Info>
+
+## Quicklinks
+
+<Columns cols={3}>
+  <Column>
+    <Card title="GitHub" color="#FF0098" icon="github" href="https://github.com/PlanetaryOrbit/orbit/">
+      View the brains of the operation!
+    </Card>
+  </Column>
+  <Column>
+    <Card title="Support" color="#FF0098" icon="bug" href="https://discord.gg/S59vsyhCB3">
+      Get support and let us know about bugs!
+    </Card>
+  </Column>
+  <Column>
+    <Card title="Changelog" color="#FF0099" icon="sparkles" href="https://feedback.planetaryapp.cloud/">
+      View our features and updates!
+    </Card>
+  </Column>
+</Columns>
